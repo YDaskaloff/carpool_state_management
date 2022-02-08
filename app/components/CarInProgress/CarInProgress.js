@@ -8,7 +8,7 @@ const CarInProgress = ({car}) => {
     <View style={styles.card}>
       <Text>{`Brand: ${car.brand}`}</Text>
       <Text>{`Type: ${car.type}`}</Text>
-      <Text>{`Issue: ${car.problem}`}</Text>
+      <Text>{`Issue: ${car.issue}`}</Text>
       <View style={styles.buttonsContainer}>
         <TouchableOpacity>
           <View style={styles.button}>

@@ -1,12 +1,22 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, ScrollView} from 'react-native';
+import CarInProgress from '../../components/CarInProgress/CarInProgress';
 
 import styles from './styles';
 
-const Garage = ({cars}) => {
+const Garage = ({route}) => {
+  const {cars, title} = route?.params || {};
+
   return (
     <View style={styles.screen}>
-      <Text>Garage</Text>
+      <View style={styles.carNumberContainer}>
+        <Text>{`Number of cars: ${cars.length}`}</Text>
+      </View>
+      <ScrollView>
+        {cars.map((car, idx) => (
+          <CarInProgress car={car} key={idx} onFixIt={() => undefined} />
+        ))}
+      </ScrollView>
     </View>
   );
 };
