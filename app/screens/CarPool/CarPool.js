@@ -5,7 +5,7 @@ import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {carGenerator} from '../../helpers';
 import {WORKSHOPS, SCREEN_NAMES} from '../../constants';
 import Car from '../../components/Car/Car';
-import WorkShop from '../../components/WorkShop/WorkShop';
+import Workshop from '../../components/Workshop/Workshop';
 import styles from './styles';
 
 const Cars = ({navigation}) => {
@@ -30,7 +30,7 @@ const Cars = ({navigation}) => {
 
   const renderWorkShop = (workshopName, idx) => {
     return (
-      <WorkShop
+      <Workshop
         key={idx}
         title={workshopName}
         onPress={() => goToGarage(workshopName)}
@@ -56,7 +56,11 @@ const Cars = ({navigation}) => {
         style={styles.scrollView}
         contentContainerStyle={styles.scrollViewContent}>
         {cars.length > 0
-          ? cars.map((car, idx) => <Car key={idx} car={car} />)
+          ? cars
+              .map((car, idx) => {
+                return <Car key={idx} car={car} />;
+              })
+              .reverse()
           : null}
       </ScrollView>
     </View>

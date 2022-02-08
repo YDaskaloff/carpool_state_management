@@ -3,11 +3,11 @@ import {View, Text, TouchableOpacity} from 'react-native';
 
 import styles from './styles';
 
-const WorkShop = ({title, numOfCars, onPress}) => {
+const Workshop = ({title, numOfCars, onPress}) => {
   return (
     <View style={styles.workShop}>
       <TouchableOpacity onPress={onPress}>
-        <View style={{width: '100%'}}>
+        <View style={{width: '100%', alignItems: 'center'}}>
           <Text>{title}</Text>
           <Text>{numOfCars}</Text>
         </View>
@@ -16,4 +16,4 @@ const WorkShop = ({title, numOfCars, onPress}) => {
   );
 };
 
-export default WorkShop;
+export default Workshop;
