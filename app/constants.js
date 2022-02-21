@@ -13,7 +13,15 @@ export const brands = [
   'Porsche',
 ];
 
-export const types = ['SUV', 'estate', 'coupe', 'sedan', 'hatchback', 'van', 'crossover'];
+export const types = [
+  'SUV',
+  'estate',
+  'coupe',
+  'sedan',
+  'hatchback',
+  'van',
+  'crossover',
+];
 
 export const issues = [
   'carburator not working',
@@ -35,4 +43,11 @@ export const WORKSHOPS = {
 export const SCREEN_NAMES = {
   CAR_POOL: 'Car pool',
   GARAGE: 'Garage',
+};
+
+export const REDUCERWORKSHOPS = {
+  Mechanic: 'mechanic',
+  'Tyre shop': 'tyreShop',
+  'Body shop': 'bodyShop',
+  Home: 'home',
 };
