@@ -13,7 +13,15 @@ export const brands = [
   'Porsche',
 ];
 
-export const types = ['SUV', 'estate', 'coupe', 'sedan', 'hatchback', 'van', 'crossover'];
+export const types = [
+  'SUV',
+  'estate',
+  'coupe',
+  'sedan',
+  'hatchback',
+  'van',
+  'crossover',
+];
 
 export const issues = [
   'carburator not working',
