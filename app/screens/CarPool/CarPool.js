@@ -1,29 +1,35 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text} from 'react-native';
-import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
+import React, { useEffect, useState } from 'react';
+import { View, Text } from 'react-native';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import { connect } from 'react-redux';
 
-import {carGenerator} from '../../helpers';
-import {WORKSHOPS, SCREEN_NAMES} from '../../constants';
+import { carGenerator } from '../../helpers';
+import { WORKSHOPS, SCREEN_NAMES } from '../../constants';
 import Car from '../../components/Car/Car';
 import Workshop from '../../components/Workshop/Workshop';
 import styles from './styles';
+import {
+  addToShop,
+  removeCarFromHome,
+  addToHome,
+} from '../../store/actions/garage';
 
-const Cars = ({navigation}) => {
-  const [cars, setCars] = useState([]);
+const Cars = ({
+  navigation,
+  garage,
+  addToShop,
+  addToHome,
+  removeCarFromHome,
+}) => {
   const [counter, setCounter] = useState(0);
-  const [workshopCars, setWorkshopCars] = useState({
-    [WORKSHOPS.MECHANIC]: [],
-    [WORKSHOPS.TYRE_SHOP]: [],
-    [WORKSHOPS.BODY_SHOP]: [],
-  });
 
   const generateCar = () => {
     const newCar = carGenerator();
-    setCars(prev => [...prev, newCar]);
+    addToHome(newCar);
   };
 
   useEffect(() => {
-    if (cars.length === 0) {
+    if (garage.home.length === 0) {
       for (let i = 0; i < 10; i++) {
         generateCar();
       }
@@ -32,42 +38,26 @@ const Cars = ({navigation}) => {
 
   useEffect(() => {
     setCounter(prevState => prevState + 1);
-  }, [workshopCars]);
+  }, [garage]);
 
   useEffect(() => {
     console.log(counter);
   }, [counter]);
 
+  //ws = workshop
   const sendToWorkshopHandler = (ws, car) => {
-    const index = cars.indexOf(car);
-    if (index > -1) {
-      setCars(prevState => {
-        return [
-          ...prevState.slice(0, index),
-          ...prevState.slice(index + 1, prevState.length),
-        ];
-      });
-    }
-
     // for the "All good!" button:
     if (!ws) {
+      removeCarFromHome(car);
       return;
     }
 
-    // Wrong way to update:
-    // workshopCars[ws].push(car);
-    // setWorkshopCars(workshopCars);
-
-    setWorkshopCars({
-      ...workshopCars,
-      [ws]: [...workshopCars[ws], car],
-    });
+    addToShop(ws, car);
   };
 
   const goToGarage = workshop => {
     navigation.navigate(SCREEN_NAMES.GARAGE, {
       title: workshop,
-      cars: workshopCars[workshop],
     });
   };
 
@@ -86,7 +76,7 @@ const Cars = ({navigation}) => {
     <View style={styles.screen}>
       <View style={styles.workShopsContainer}>
         {Object.values(WORKSHOPS).map((workshopName, idx) =>
-          renderWorkShop(workshopName, idx, workshopCars[workshopName]),
+          renderWorkShop(workshopName, idx, garage[workshopName]),
         )}
       </View>
       <View style={styles.moreCarsButton}>
@@ -99,22 +89,32 @@ const Cars = ({navigation}) => {
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollViewContent}>
-        {cars.length > 0
-          ? cars
-              .map((car, idx) => {
-                return (
-                  <Car
-                    key={idx}
-                    car={car}
-                    sendToWorkshop={sendToWorkshopHandler}
-                  />
-                );
-              })
-              .reverse()
+        {garage.home.length > 0
+          ? garage.home
+            .map((car, idx) => {
+              return (
+                <Car
+                  key={idx}
+                  car={car}
+                  sendToWorkshop={sendToWorkshopHandler}
+                />
+              );
+            })
+            .reverse()
           : null}
       </ScrollView>
     </View>
   );
 };
 
-export default Cars;
+const mapStateToProps = state => ({
+  garage: state.garage,
+});
+
+const mapDispatchToProps = dispatch => ({
+  addToShop: (shop, car) => dispatch(addToShop(shop, car)),
+  removeCarFromHome: car => dispatch(removeCarFromHome(car)),
+  addToHome: car => dispatch(addToHome(car)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Cars);

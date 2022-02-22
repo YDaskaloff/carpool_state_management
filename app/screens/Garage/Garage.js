@@ -1,12 +1,13 @@
 import React from 'react';
-import {View, Text, ScrollView} from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import CarInProgress from '../../components/CarInProgress/CarInProgress';
+import { connect } from 'react-redux';
 
 import styles from './styles';
 
-const Garage = ({route}) => {
-  const {cars, title} = route?.params || {};
-
+const Garage = ({ route, garage }) => {
+  const { title } = route?.params || {};
+  const cars = garage[title];
   return (
     <View style={styles.screen}>
       <View style={styles.carNumberContainer}>
@@ -14,11 +15,15 @@ const Garage = ({route}) => {
       </View>
       <ScrollView>
         {cars.map((car, idx) => (
-          <CarInProgress car={car} key={idx} onFixIt={() => undefined} />
+          <CarInProgress car={car} key={idx} shopName={title} />
         ))}
       </ScrollView>
     </View>
   );
 };
 
-export default Garage;
+const mapStateToProps = state => ({
+  garage: state.garage,
+});
+
+export default connect(mapStateToProps)(Garage);
