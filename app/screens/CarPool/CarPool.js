@@ -9,7 +9,7 @@ import {WORKSHOPS, SCREEN_NAMES, REDUCERWORKSHOPS} from '../../constants';
 import Car from '../../components/Car/Car';
 import Workshop from '../../components/WorkShop/WorkShop';
 import styles from './styles';
-// test for pull request
+
 const Cars = ({navigation}) => {
   const mechanic = useSelector(store => store.garage.mechanic);
   const tyreShop = useSelector(store => store.garage.tyreShop);
